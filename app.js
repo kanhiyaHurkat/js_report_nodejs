@@ -9,6 +9,7 @@ const usersRouter = require('./routes/users');
 const invoiceRouter = require('./routes/invoice');
 const salesRouter = require('./routes/sales');
 const orderRouter = require('./routes/orders');
+const resumeRouter = require('./routes/resume');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/users', usersRouter);
 app.use('/invoice', invoiceRouter)
 app.use('/sales', salesRouter)
 app.use('/order', orderRouter)
+app.use('/resume', resumeRouter)
 
 
 // catch 404 and forward to error handler
