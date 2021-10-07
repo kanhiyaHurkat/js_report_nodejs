@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-// const excelTemplate = require('./../template/project-portfolio-dashboard-template.xlsx')
-const request = require('request')
+// Using in Method 1
 const client = require('jsreport-client')('http://localhost:8001')
+// Using in Method 2
+// const request = require('request')
 
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
@@ -13,7 +13,9 @@ router.get('/', async function(req, res, next) {
             throw err;
         }
     });*/
-    const data = {
+
+    //<editor-fold desc="Method: 1">
+    /*const data = {
         template: {shortid:'rkJTnK2ce'},
         options: {
             preview: true
@@ -24,11 +26,15 @@ router.get('/', async function(req, res, next) {
         method: 'POST',
         json: data
     }
-    request(options).pipe(res)
-    /*client.render({
-        template: { content: htmlTemplate.toString(), recipe: 'chrome-pdf', engine: 'none' }
+    request(options).pipe(res)*/
+    //</editor-fold>
+
+    //<editor-fold desc="Method: 2">
+    client.render({
+        template: {shortid:'rkJTnK2ce'}
     }, { timeout: 5000 }).then((response) => response.pipe(res))
-        .catch(next)*/
+        .catch(next)
+    //</editor-fold>
 });
 
 module.exports = router;
