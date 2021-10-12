@@ -11,6 +11,7 @@ const salesRouter = require('./routes/sales');
 const orderRouter = require('./routes/orders');
 const resumeRouter = require('./routes/resume');
 const registrationRouter = require('./routes/registration');
+const cors = require('cors')
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

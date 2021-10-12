@@ -46,12 +46,27 @@ router.post('/add_user', async function(req, res, _) {
         registerUser.push(req.body)
         localStorage.setItem('users', JSON.stringify(registerUser))
     }
-    res.redirect('/registration/view_user')
+    res.status(200).send({
+        message: 'User added successfully',
+        data: req.body
+    })
 });
 
-router.get('/view_user', async function(req, res, next) {
+router.get('/view_users', async function(req, res, next) {
     client.render({
         template: {shortid: '5SY-K7zjnb'}
+    }, { timeout: 5000 }).then((response) => response.pipe(res))
+      .catch(next)
+});
+
+router.get('/view_user/:id', async function(req, res, next) {
+    const localUserData = JSON.parse(localStorage.getItem('users'))
+    let user
+    if (localUserData) {
+        user = localUserData.find(user => user.studentId === req.params.id)
+    }
+    client.render({
+        template: {shortid: 'B1gfxleFPL', data: {students: [user]}}, options: {preview: true}
     }, { timeout: 5000 }).then((response) => response.pipe(res))
       .catch(next)
 });
