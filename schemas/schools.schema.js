@@ -22,6 +22,10 @@ const SchoolSchema = new Schema({
     type: String,
     default: ''
   },
+  user_id: {
+    type: String,
+    default: null
+  }
 })
 
 module.exports = mongoose.model('school', SchoolSchema);

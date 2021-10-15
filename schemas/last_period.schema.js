@@ -18,6 +18,10 @@ const LastPeriodSchema = new Schema({
     type: Number,
     default: ''
   },
+  user_id: {
+    type: String,
+    default: null
+  }
 
 })
 

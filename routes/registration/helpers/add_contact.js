@@ -1,19 +1,20 @@
 const db = require('../../../schemas/schema');
 
-add_contact = (req, res, next) => {
-  return add_contact_data(req,function (status, _activity) {
+add_contact = (userId, req, res, next) => {
+  return add_contact_data(userId, req,function (status, _activity) {
     next(status, _activity);
   });
 };
 
 
-function add_contact_data(req, next) {
+function add_contact_data(userId, req, next) {
   let contacts = [...req.body.contacts]
   let newContacts = []
   let contactIds = []
 
   if (contacts && contacts.length) {
     contacts.map(contact => {
+      contact.user_id = userId
       if (contact._id) {
         contactIds.push(contact._id)
       }else {

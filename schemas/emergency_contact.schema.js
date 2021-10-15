@@ -17,6 +17,10 @@ const EmergencyContactSchema = new Schema({
   phone: {
     type: String,
     default: ''
+  },
+  user_id: {
+    type: String,
+    default: null
   }
 })
 

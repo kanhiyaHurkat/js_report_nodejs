@@ -38,11 +38,6 @@ function add_user_data(req, res, next) {
           data: null
         });
       } else {
-        let schoolIds = await add_school(req, res, next)
-        let contactIds = await add_contact(req, res, next)
-        let scoreIds = await add_score(req, res, next)
-        let attendanceIds = await add_class_attendance(req, res, next)
-        let lastRatingIds = await add_last_rating(req, res, next)
         let users = new db.users({
           studentId: req.body.studentId,
           picture: req.body.picture,
@@ -54,13 +49,8 @@ function add_user_data(req, res, next) {
           address: req.body.address,
           language: req.body.language,
           enteredDate: req.body.enteredDate,
-          schools: schoolIds,
-          contacts: contactIds,
-          scores: scoreIds,
-          attendance: attendanceIds,
-          lastRating: lastRatingIds
         })
-        users.save(function (err, response) {
+        users.save(async function (err, response) {
           if (err) {
             next(500, {
               status: 500,
@@ -68,21 +58,46 @@ function add_user_data(req, res, next) {
               data: null
             });
           } else {
-            next(200, {
-              status: 200,
-              message: 'User added successfully',
-              data: response
-            });
+            const userId = response._id.toString()
+            let schoolIds = await add_school(userId, req, res, next)
+            let contactIds = await add_contact(userId, req, res, next)
+            let scoreIds = await add_score(userId, req, res, next)
+            let attendanceIds = await add_class_attendance(userId, req, res, next)
+            let lastRatingIds = await add_last_rating(userId, req, res, next)
+            db.users.updateOne(
+              {_id: mongoose.Types.ObjectId(userId)},
+              {$set: {
+                  schools: [...schoolIds],
+                  contacts: [...contactIds],
+                  scores: [...scoreIds],
+                  attendance: [...attendanceIds],
+                  lastRating: [...lastRatingIds]
+              }}
+            ).exec(function (updateError, updateResponse) {
+              if (updateError) {
+                console.log('User Update Error: ', updateError)
+                next(500, {
+                  status: 500,
+                  message: updateError.message,
+                  data: null
+                });
+              }
+              next(200, {
+                status: 200,
+                message: 'User added successfully',
+                data: response
+              });
+            })
           }
         })
       }
     }
     else {
-      let schoolIds = await add_school(req, res, next)
-      let contactIds = await add_contact(req, res, next)
-      let scoreIds = await add_score(req, res, next)
-      let attendanceIds = await add_class_attendance(req, res, next)
-      let lastRatingIds = await add_last_rating(req, res, next)
+      let schoolIds = await add_school(req.body._id, req, res, next)
+      let contactIds = await add_contact(req.body._id, req, res, next)
+      let scoreIds = await add_score(req.body._id, req, res, next)
+      let attendanceIds = await add_class_attendance(req.body._id, req, res, next)
+      let lastRatingIds = await add_last_rating(req.body._id, req, res, next)
       db.users.findOneAndUpdate(
         { _id : mongoose.Types.ObjectId(req.body._id) },
         { $set: {

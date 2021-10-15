@@ -1,13 +1,13 @@
 const db = require('../../../schemas/schema');
 
-add_class_attendance = (req, res, next) => {
-  return add_class_attendance_data(req,function (status, _activity) {
+add_class_attendance = (userId, req, res, next) => {
+  return add_class_attendance_data(userId, req,function (status, _activity) {
     next(status, _activity);
   })
 };
 
 
-function add_class_attendance_data(req, next) {
+function add_class_attendance_data(userId, req, next) {
   let attendance = [...req.body.attendance]
 
   let newClassAttendance = []
@@ -15,6 +15,7 @@ function add_class_attendance_data(req, next) {
 
   if (attendance && attendance.length) {
     attendance.map(attend => {
+      attend.user_id = userId
       if (attend._id) {
         attendanceIds.push(attend._id)
       }else {

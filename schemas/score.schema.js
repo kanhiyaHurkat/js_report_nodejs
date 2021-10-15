@@ -22,6 +22,10 @@ const ScoreSchema = new Schema({
     type: Number,
     default: ''
   },
+  user_id: {
+    type: String,
+    default: null
+  }
 })
 
 module.exports = mongoose.model('score', ScoreSchema);

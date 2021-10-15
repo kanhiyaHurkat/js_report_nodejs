@@ -1,18 +1,19 @@
 const db = require('../../../schemas/schema');
 
-add_score = (req, res, next) => {
-  return add_score_data(req,function (status, _activity) {
+add_score = (userId, req, res, next) => {
+  return add_score_data(userId, req,function (status, _activity) {
     next(status, _activity);
   });
 };
 
 
-function add_score_data(req, next) {
+function add_score_data(userId, req, next) {
   let scores = [...req.body.scores]
   let newScores = []
   let scoreIds = []
   if (scores && scores.length) {
     scores.map(score => {
+      score.user_id = userId
       if (score._id) {
         scoreIds.push(score._id)
       }else {

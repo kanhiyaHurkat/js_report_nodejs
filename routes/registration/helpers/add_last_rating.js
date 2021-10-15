@@ -1,19 +1,20 @@
 const db = require('../../../schemas/schema');
 
-add_last_rating = (req, res, next) => {
-  return add_last_rating_data(req,function (status, _activity) {
+add_last_rating = (userId, req, res, next) => {
+  return add_last_rating_data(userId, req,function (status, _activity) {
     next(status, _activity);
   });
 };
 
 
-function add_last_rating_data(req, next) {
+function add_last_rating_data(userId, req, next) {
   let lastRatings = [...req.body.lastRating]
   let newLastRating = []
   let lastRatingIds = []
 
   if (lastRatings && lastRatings.length) {
     lastRatings.map(rating => {
+      rating.user_id = userId
       if (rating._id) {
         lastRatingIds.push(rating._id)
       }else {

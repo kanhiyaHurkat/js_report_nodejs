@@ -1,20 +1,20 @@
 const db = require('../../../schemas/schema');
 
-add_school = (req, res, next) => {
-  return add_school_data(req,function (status, _activity) {
+add_school = (userId, req, res, next) => {
+  return add_school_data(userId, req,function (status, _activity) {
     next(status, _activity);
   });
 };
 
 
-function add_school_data(req, next) {
+function add_school_data(userId, req, next) {
   let schools = [...req.body.schools]
-
   let newSchool = []
   let schoolIds = []
 
   if (schools && schools.length) {
     schools.map(school => {
+      school.user_id = userId
       if (school._id) {
         schoolIds.push(school._id)
       }else {

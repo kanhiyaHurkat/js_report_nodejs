@@ -9,6 +9,10 @@ const ClassAttendanceSchema = new Schema({
   state: {
     type: String,
     default: ''
+  },
+  user_id: {
+    type: String,
+    default: null
   }
 })
 
