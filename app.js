@@ -10,8 +10,9 @@ const invoiceRouter = require('./routes/invoice');
 const salesRouter = require('./routes/sales');
 const orderRouter = require('./routes/orders');
 const resumeRouter = require('./routes/resume');
-const registrationRouter = require('./routes/registration');
+// const registrationRouter = require('./routes/registration');
 const cors = require('cors')
+require('./db/mongoose')
 
 const app = express();
 
@@ -32,7 +33,11 @@ app.use('/invoice', invoiceRouter)
 app.use('/sales', salesRouter)
 app.use('/order', orderRouter)
 app.use('/resume', resumeRouter)
-app.use('/registration', registrationRouter)
+// app.use('/registration', registrationRouter)
+
+const registerRouter = require('./routes/registration/index')
+
+app.use('/registration', registerRouter);
 
 if (typeof localStorage === "undefined" || localStorage === null) {
   const LocalStorage = require('node-localstorage').LocalStorage;
